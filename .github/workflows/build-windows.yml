@@ -1,0 +1,21 @@
+name: Build Windows exe
+
+on:
+  workflow_dispatch:        # กดรันเองจากแท็บ Actions
+  push:
+    branches: [main]        # หรือรันอัตโนมัติเมื่ออัปโหลดไฟล์ใหม่
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyinstaller
+      - run: pyinstaller --onefile --windowed --name deeka_register deeka_register.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deeka_register-windows
+          path: dist/deeka_register.exe
